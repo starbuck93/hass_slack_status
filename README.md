@@ -9,6 +9,7 @@ Get a bearer token from https://api.slack.com/apps?new_app=1 and set at least th
 
 You can use the service in an automation, for example:
 
+```
 automation:
   trigger:
     platform: state
@@ -27,3 +28,4 @@ automation:
 	    entity_id:
 	      - light.kitchen
 	      - light.living_room
+```
