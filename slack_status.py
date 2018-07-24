@@ -11,8 +11,8 @@ import homeassistant.helpers.config_validation as cv
 DOMAIN = 'slack_status'
 REQUIREMENTS = ['requests==0.0.1'] #what version should I put here?
 
-CONF_STATUS_TEXT = 'text'
-CONF_STATUS_EMOJI = 'emoji'
+CONF_BEARER_TOKEN = 'bearer_token'
+
 
 #Set default for calling the service without any data (This should clear any status/emoji)
 DEFAULT_STATUS_TEXT = ''
@@ -21,8 +21,7 @@ DEFAULT_STATUS_EMOJI = ''
 #Not sure if this is correct or not
 CONFIG_SCHEMA = vol.Schema({
     DOMAIN: vol.Schema({
-        vol.Required(CONF_STATUS_TEXT, default=DEFAULT_STATUS_TEXT): cv.string,
-        vol.Required(CONF_STATUS_EMOJI, default=DEFAULT_STATUS_EMOJI): cv.string,
+        vol.Required(CONF_STATUS_TEXT, default=CONF_BEARER_TOKEN): cv.string,
     }),
 }, extra=vol.ALLOW_EXTRA)
 
@@ -32,8 +31,8 @@ def setup(hass, config):
 
     def set_status(call):
         import requests
-    	emoji = call.data.get('emoji', TEXT_STRING) #try to get the data passed into the service
-    	text = call.data.get('text', EMOJI_STRING) #^^
+    	emoji = call.data.get('emoji', DEFAULT_STATUS_TEXT) #try to get the data passed into the service
+    	text = call.data.get('text', DEFAULT_STATUS_EMOJI) #^^
 
         # hass.states.set('hello_service.hello', name)
 		url = "https://slack.com/api/users.profile.set"
