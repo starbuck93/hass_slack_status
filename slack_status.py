@@ -21,9 +21,9 @@ DEFAULT_STATUS_EMOJI = ''
 #Not sure if this is correct or not
 CONFIG_SCHEMA = vol.Schema({
     DOMAIN: vol.Schema({
-        vol.Required(CONF_STATUS_TEXT, default=CONF_BEARER_TOKEN): cv.string,
+        vol.Required(CONF_BEARER_TOKEN): cv.string,
     }),
-}, extra=vol.ALLOW_EXTRA)
+})
 
 
 def setup(hass, config):
@@ -31,8 +31,14 @@ def setup(hass, config):
 
     def set_status(call):
         import requests
-    	emoji = call.data.get('emoji', DEFAULT_STATUS_TEXT) #try to get the data passed into the service
-    	text = call.data.get('text', DEFAULT_STATUS_EMOJI) #^^
+        import re
+        
+    	emoji = call.data.get('emoji', DEFAULT_STATUS_TEXT)
+    	text = call.data.get('text', DEFAULT_STATUS_EMOJI)
+
+    	if re.match(":[a-zA-Z]+:",emoji) is None:
+    		return False
+
 
         # hass.states.set('hello_service.hello', name)
 		url = "https://slack.com/api/users.profile.set"
