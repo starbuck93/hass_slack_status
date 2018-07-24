@@ -1,3 +1,8 @@
+## This is not functional yet. It is an IDEA... a Work in Progress!
+But here's how I want it to work:
+
+-----------------
+
 Set up the service in configuration.yaml:
 
 ```
