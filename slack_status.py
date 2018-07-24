@@ -20,41 +20,41 @@ DEFAULT_STATUS_EMOJI = ''
 
 #Not sure if this is correct or not
 CONFIG_SCHEMA = vol.Schema({
-    DOMAIN: vol.Schema({
-        vol.Required(CONF_BEARER_TOKEN): cv.string,
-    }),
+	DOMAIN: vol.Schema({
+		vol.Required(CONF_BEARER_TOKEN): cv.string,
+	}),
 })
 
 
 def setup(hass, config):
-    """Set up is called when Home Assistant is loading our component."""
+	"""Set up is called when Home Assistant is loading our component."""
 
-    def set_status(call):
-        import requests
-        import re
-        
-    	emoji = call.data.get('emoji', DEFAULT_STATUS_TEXT)
-    	text = call.data.get('text', DEFAULT_STATUS_EMOJI)
+	def set_status(call):
+		import requests
+		import re
+		
+		emoji = call.data.get('emoji', DEFAULT_STATUS_TEXT)
+		text = call.data.get('text', DEFAULT_STATUS_EMOJI)
 
-    	if re.match(":[a-zA-Z]+:",emoji) is None:
-    		return False
+		if re.match(":[a-zA-Z]+:",emoji) is None:
+			return False
 
 
-        # hass.states.set('hello_service.hello', name)
+		# hass.states.set('hello_service.hello', name)
 		url = "https://slack.com/api/users.profile.set"
 
 		payload = "{\"profile\":{\"status_text\": \""+ text +"\",\"status_emoji\": \""+ emoji +"\"}}"
 		headers = {
-		    'Content-Type': "application/json; charset=utf-8",
-		    'Authorization': "Bearer "+ config['slack_status']['bearer_token'],
-		    'Cache-Control': "no-cache",
-		    }
+			'Content-Type': "application/json; charset=utf-8",
+			'Authorization': "Bearer "+ config['slack_status']['bearer_token'],
+			'Cache-Control': "no-cache",
+			}
 
 		response = requests.request("POST", url, data=payload, headers=headers)
 
 		print(response.text)
 
-    hass.services.register(DOMAIN, 'set_status', set_status)
+	hass.services.register(DOMAIN, 'set_status', set_status)
 
-    # Return boolean to indicate that initialization was successfully.
-    return True
+	# Return boolean to indicate that initialization was successfully.
+	return True
