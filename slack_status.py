@@ -23,7 +23,7 @@ CONFIG_SCHEMA = vol.Schema({
 	DOMAIN: vol.Schema({
 		vol.Required(CONF_BEARER_TOKEN): cv.string,
 	}),
-})
+}, extra=vol.ALLOW_EXTRA)
 
 
 def setup(hass, config):
